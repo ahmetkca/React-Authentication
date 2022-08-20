@@ -1,3 +1,5 @@
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
+
 import express from 'express';
 import { routes } from './routes';
 import { initializeDbConnection } from './db';
@@ -13,7 +15,7 @@ app.use(express.json());
 // Add all the routes to our Express server
 // exported from routes/index.js
 routes.forEach(route => {
-    app[route.method](route.path, route.handler);
+    app[route.method.toLowerCase()](route.path, route.handler);
 });
 
 // Connect to the database, then start the server.
