@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import axios from "axios";
+import { useUser } from "../auth/useUser";
+import { useJwtToken } from "../auth/useJwtToken";
+
 export const UserInfoPage = () => {
+    const { email, info, userId } = useUser();
+    const [jwtToken, setJwtToken] = useJwtToken();
 
     const navigate = useNavigate();
 
-    const [favoriteFood, setFavoriteFood] = useState("");
-    const [hairColor, setHairColor] = useState("");
-    const [bio, setBio] = useState("");
+    const [favoriteFood, setFavoriteFood] = useState(info?.favoriteFood || '');
+    const [hairColor, setHairColor] = useState(info?.hairColor || '');
+    const [bio, setBio] = useState(info?.bio || '');
 
     const [showSuccessMessage, setShowSuccessMessage] = useState(false);
     const [showErrorMessage, setShowErrorMessage] = useState(false);
@@ -22,7 +28,25 @@ export const UserInfoPage = () => {
     } , [showSuccessMessage, showErrorMessage]);
 
     const onSaveChanges = async () => {
-        alert('Save functionality not implemented yet');
+        try {
+            const response = await axios.put(`http://localhost:8080/api/users/${userId}`, {
+                favoriteFood,
+                hairColor,
+                bio
+            }, {
+                headers: {
+                    Authorization: `Bearer ${jwtToken}`
+                }
+            });
+
+            const { token: newToken } = response.data;
+
+            setJwtToken(newToken);
+            setShowSuccessMessage(true);
+        } catch (error) {
+            setShowErrorMessage(true);
+            console.log(error);
+        }
     }
 
     const onLogOut = async () => {
@@ -30,12 +54,14 @@ export const UserInfoPage = () => {
     }
 
     const onResetValues = async () => {
-        alert('Reset functionality not implemented yet');
+        setFavoriteFood(info?.favoriteFood || '');
+        setHairColor(info?.hairColor || '');
+        setBio(info?.bio || '');
     }
 
     return (
         <div className="content-container">
-            <h1>Info for ______</h1>
+            <h1>Info for {email}</h1>
             {showSuccessMessage && <div className="success">Successfully saved user data!</div>}
             {showErrorMessage && <div className="fail">Uh oh... something went wrong and we couldn't save changes.</div>}
             <label>
@@ -60,6 +86,9 @@ export const UserInfoPage = () => {
                     rows="4"
                     cols="12" />
             </label>
+            <button className="btn btn-primary" onClick={onSaveChanges}>Save Changes</button>
+            <button className="btn btn-primary" onClick={onResetValues}>Reset Values</button>
+            <button className="btn btn-primary" onClick={onLogOut}>Log Out</button>
         </div>
     )
 }

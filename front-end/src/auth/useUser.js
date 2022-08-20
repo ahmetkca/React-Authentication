@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useJwtToken } from "./useJwtToken";
 
 export const useUser = () => {
-    const [token] = useJwtToken();
+    const [jwtToken] = useJwtToken();
 
     const getPayloadFromJwtToken = (token) => {
         console.log(token);
@@ -11,19 +11,19 @@ export const useUser = () => {
     }
 
     const [user, setUser] = useState(() => {
-        if (token) {
-            return getPayloadFromJwtToken(token);
+        if (jwtToken) {
+            return getPayloadFromJwtToken(jwtToken);
         }
         return null;
     });
 
     useEffect(() => {
-        if (token) {
-            setUser(getPayloadFromJwtToken(token));
+        if (jwtToken) {
+            setUser(getPayloadFromJwtToken(jwtToken));
         } else {
             setUser(null);
         }
-    }, [token]); // only re-run the effect if token changes
+    }, [jwtToken]); // only re-run the effect if token changes
 
-    return [user];
+    return user;
 }
