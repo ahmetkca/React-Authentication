@@ -10,7 +10,10 @@ const app = express();
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost:5173"); // update to match the domain you will make the request from
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,POST,PUT,DELETE,OPTIONS");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Max-Age", "86400"); // 24 hours
     next();
 }); 
 
