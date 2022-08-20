@@ -7,7 +7,7 @@ import { useJwtToken } from "../auth/useJwtToken";
 
 export const UserInfoPage = () => {
     const { email, info, userId } = useUser();
-    const [jwtToken, setJwtToken] = useJwtToken();
+    const [jwtToken, setJwtToken, clearJwtToken] = useJwtToken();
 
     const navigate = useNavigate();
 
@@ -50,7 +50,8 @@ export const UserInfoPage = () => {
     }
 
     const onLogOut = async () => {
-        alert('Log out functionality not implemented yet');
+        clearJwtToken();
+        navigate("/login");
     }
 
     const onResetValues = async () => {

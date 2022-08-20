@@ -11,6 +11,7 @@ export const useJwtToken = () => {
     } // external function to set the token
 
     const clearJwtToken = () => {
+        console.log("clearing token");
         localStorage.removeItem("jwtToken"); // remove the token from localStorage
         setToken(null); // set the token to the state
     } // external function to clear the token
