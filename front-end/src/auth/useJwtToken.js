@@ -8,12 +8,12 @@ export const useJwtToken = () => {
     const setJwtToken = (jwtToken) => {
         localStorage.setItem("jwtToken", jwtToken); // set the token to localStorage
         setToken(jwtToken); // set the token to the state
-    }
+    } // external function to set the token
 
     const clearJwtToken = () => {
         localStorage.removeItem("jwtToken"); // remove the token from localStorage
         setToken(null); // set the token to the state
-    }
+    } // external function to clear the token
 
     return [jwtToken, setJwtToken, clearJwtToken];
 }

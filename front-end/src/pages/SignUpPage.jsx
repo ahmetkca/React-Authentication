@@ -1,22 +1,22 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { useJwtToken } from "../auth/useJwtToken";
+import axios from "axios";
+
 export const SignUpPage = () => {
+    const [jwtToken, setJwtToken, clearJwtToken] = useJwtToken();
+
     const navigate = useNavigate();
 
     const renderCount = useRef(0);
     renderCount.current = renderCount.current + 1;
 
+    const [showErrorMessage, setShowErrorMessage] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [verifyPasswordValue, setVerifyPasswordValue] = useState("");
-
-    const onSignUp = async (e) => {
-        e.preventDefault();
-        console.log("Sign up");
-        console.log(username, password, verifyPasswordValue);
-        alert("Sign Up functionality not yet implemented");
-    }
 
     const verifyPassword = () => {
         if (password.length > 0 && verifyPasswordValue.length > 0 && password === verifyPasswordValue) {
@@ -25,10 +25,30 @@ export const SignUpPage = () => {
         return false;
     }
 
-    const [showErrorMessage, setShowErrorMessage] = useState(false);
+    const onSignUp = async (e) => {
+        e.preventDefault();
+        if (verifyPassword()) {
+            try {
+                const response = await axios.post("http://localhost:8080/api/signup", {
+                    email: username,
+                    password
+                });
+                const { token: jwtToken } = response.data;
+                console.log(`jwtToken: ${jwtToken}`);
+                setJwtToken(jwtToken);
+                navigate("/");
+            } catch (error) {
+                setShowErrorMessage(true);
+                setErrorMessage(error.response.data.error);
+            }
+        }
+    }
+
+    
 
     return (
         <div>
+            { showErrorMessage && <div className="fail">{errorMessage}</div> }
             <h1>Sign Up (Total render and re-renders: {renderCount.current})</h1>
             {showErrorMessage && <div className="fail">Uh oh... something went wrong and we couldn't sign you up.</div>}
             <form onSubmit={(e) => onSignUp(e)}>

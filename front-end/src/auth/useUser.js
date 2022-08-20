@@ -5,6 +5,7 @@ export const useUser = () => {
     const [token] = useJwtToken();
 
     const getPayloadFromJwtToken = (token) => {
+        console.log(token);
         const payload = token.split(".")[1];
         return JSON.parse(atob(payload));
     }
