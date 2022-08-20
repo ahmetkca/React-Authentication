@@ -25,7 +25,7 @@ export const signUpRoute = {
         const newUser = await db.collection('users').insertOne({
             email,
             hashedPassword,
-            info: defaultUser,
+            info: { ...defaultUser },
             isVerified: false,
         });
         const { insertedId } = newUser;
@@ -33,7 +33,7 @@ export const signUpRoute = {
         const token = jwt.sign({
             userId: insertedId,
             email,
-            info:   defaultUser,
+            info: { ...defaultUser },
             isVerified: false,
         }, process.env.JWT_SECRET, { expiresIn: '1d' }, (err, token) => {
             if (err) {

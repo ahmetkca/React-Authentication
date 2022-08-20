@@ -23,15 +23,22 @@ export const logInRoute = {
             return res.status(401).json({ error: 'Password is incorrect' });
         }
 
-        const token = jwt.sign({
-            id,
+        console.log(`jwt.sign: ${JSON.stringify({
+            userId: id,
             email,
-            info,
+            info: {...info},
+            isVerified,
+        })}`)
+        const token = jwt.sign({
+            userId: id,
+            email,
+            info: {...info},
             isVerified,
         }, process.env.JWT_SECRET, { expiresIn: '1d' }, (err, token) => {
             if (err) {
                 return res.status(500).send({ error: err });
             }
+            console.log(`token: ${token}`);``
             return res.status(200).json({ token });
         } );
     }
