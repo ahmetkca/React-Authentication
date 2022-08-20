@@ -25,5 +25,5 @@ export const useUser = () => {
         }
     }, [token]); // only re-run the effect if token changes
 
-    return [user, setUser];
+    return [user];
 }
