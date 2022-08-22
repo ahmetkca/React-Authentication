@@ -1,4 +1,4 @@
-require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` });
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}.local` });
 
 import express from 'express';
 import { routes } from './routes';
