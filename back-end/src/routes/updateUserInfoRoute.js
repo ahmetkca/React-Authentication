@@ -28,11 +28,14 @@ export const updateUserInfoRoute = {
                 return res.status(401).json({ error: 'Unauthorized' });
             }
             console.log(`decoded: ${JSON.stringify(decoded)}`);
-            const { userId: decodedUserId } = decoded;
+            const { userId: decodedUserId, isVerified } = decoded;
             console.log(`decodedUserId: ${decodedUserId}`);
             console.log(`userId: ${userId}`);
             if (decodedUserId !== userId) {
                 return res.status(403).json({ error: 'Error: Unauthorized, cannot update other users info' });
+            }
+            if (!isVerified) {
+                return res.status(403).json({ error: 'Error: Unverified email, cannot update info' });
             }
         });
         
