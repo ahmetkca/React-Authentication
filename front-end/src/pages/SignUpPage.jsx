@@ -36,7 +36,7 @@ export const SignUpPage = () => {
                 const { token: jwtToken } = response.data;
                 console.log(`jwtToken: ${jwtToken}`);
                 setJwtToken(jwtToken);
-                navigate("/");
+                navigate("/please-verify");
             } catch (error) {
                 setShowErrorMessage(true);
                 setErrorMessage(error.response.data.error);

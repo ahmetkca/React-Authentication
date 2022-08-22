@@ -6,6 +6,7 @@ import UserInfoPage from '../pages/UserInfoPage';
 import LogInPage from '../pages/LogInPage';
 import SignUpPage from '../pages/SignUpPage';
 import { ProtectedRoute } from '../auth/ProtectedRoute';
+import { VerifyEmail } from '../pages/VerifyEmail';
 
 export const MyRoutes = () => {
     return (
@@ -17,6 +18,7 @@ export const MyRoutes = () => {
                         <ProtectedRoute>
                             <UserInfoPage />
                         </ProtectedRoute>} />
+                <Route path="please-verify" element={<VerifyEmail />} />
                 <Route path='login' element={<LogInPage />} />
                 <Route path='signup' element={<SignUpPage />} />
                 <Route path='*' element={<div>Page not found</div>} />

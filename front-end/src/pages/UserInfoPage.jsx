@@ -6,7 +6,7 @@ import { useUser } from "../auth/useUser";
 import { useJwtToken } from "../auth/useJwtToken";
 
 export const UserInfoPage = () => {
-    const { email, info, userId } = useUser();
+    const { email, info, userId, isVerified } = useUser();
     const [jwtToken, setJwtToken, clearJwtToken] = useJwtToken();
 
     const navigate = useNavigate();
@@ -63,6 +63,7 @@ export const UserInfoPage = () => {
     return (
         <div className="content-container">
             <h1>Info for {email}</h1>
+            {!isVerified && <div className="fail">To be able to update your info you need to verify your email!</div>}
             {showSuccessMessage && <div className="success">Successfully saved user data!</div>}
             {showErrorMessage && <div className="fail">Uh oh... something went wrong and we couldn't save changes.</div>}
             <label>
