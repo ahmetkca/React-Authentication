@@ -26,20 +26,22 @@ export const updateUserInfoRoute = {
         let jwtVerifyError = false;
         jwt.verify(jwtToken, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
-                return res.status(401).json({ error: 'Unauthorized' });
                 jwtVerifyError = true;
+                return res.status(401).json({ error: 'Unauthorized' });
             }
             console.log(`decoded: ${JSON.stringify(decoded)}`);
             const { userId: decodedUserId, isVerified } = decoded;
             console.log(`decodedUserId: ${decodedUserId}`);
             console.log(`userId: ${userId}`);
             if (decodedUserId !== userId) {
-                return res.status(403).json({ error: 'Error: Unauthorized, cannot update other users info' });
                 jwtVerifyError = true;
+                return res.status(403).json({ error: 'Error: Unauthorized, cannot update other users info' });
             }
             if (!isVerified) {
-                return res.status(403).json({ error: 'Error: Unverified email, cannot update info' });
+                console.log(`email: ${decoded.email} is not verified: ${isVerified}`);
                 jwtVerifyError = true;
+                return res.status(403).json({ error: 'Error: Unverified email, cannot update info' });
+                
             }
         });
         if (jwtVerifyError) {
