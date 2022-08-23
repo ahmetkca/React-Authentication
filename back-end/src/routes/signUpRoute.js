@@ -46,8 +46,8 @@ export const signUpRoute = {
                 `,
                 html: `
                     <p>Please verify your email by clicking the following link:</p>
-                    <a href="http://localhost:3000/api/verify-email/${verificationToken}">
-                        http://localhost:3000/api/verify-email/${verificationToken}
+                    <a href="http://localhost:5173/verify-email/${verificationToken}">
+                        http://localhost:5173/verify-email/${verificationToken}
                     </a>
                 `,
             });

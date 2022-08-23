@@ -7,6 +7,7 @@ import LogInPage from '../pages/LogInPage';
 import SignUpPage from '../pages/SignUpPage';
 import { ProtectedRoute } from '../auth/ProtectedRoute';
 import { VerifyEmail } from '../pages/VerifyEmail';
+import EmailVerificationLandingPage from '../pages/EmailVerificationLandingPage';
 
 export const MyRoutes = () => {
     return (
@@ -18,6 +19,7 @@ export const MyRoutes = () => {
                         <ProtectedRoute>
                             <UserInfoPage />
                         </ProtectedRoute>} />
+                <Route path="verify-email/:verificationToken" element={<EmailVerificationLandingPage />} />
                 <Route path="please-verify" element={<VerifyEmail />} />
                 <Route path='login' element={<LogInPage />} />
                 <Route path='signup' element={<SignUpPage />} />

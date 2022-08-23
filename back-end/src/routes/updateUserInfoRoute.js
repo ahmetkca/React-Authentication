@@ -23,9 +23,11 @@ export const updateUserInfoRoute = {
         }
 
         const jwtToken = authorization.split(' ')[1];
+        let jwtVerifyError = false;
         jwt.verify(jwtToken, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
                 return res.status(401).json({ error: 'Unauthorized' });
+                jwtVerifyError = true;
             }
             console.log(`decoded: ${JSON.stringify(decoded)}`);
             const { userId: decodedUserId, isVerified } = decoded;
@@ -33,11 +35,16 @@ export const updateUserInfoRoute = {
             console.log(`userId: ${userId}`);
             if (decodedUserId !== userId) {
                 return res.status(403).json({ error: 'Error: Unauthorized, cannot update other users info' });
+                jwtVerifyError = true;
             }
             if (!isVerified) {
                 return res.status(403).json({ error: 'Error: Unverified email, cannot update info' });
+                jwtVerifyError = true;
             }
         });
+        if (jwtVerifyError) {
+            return;
+        }
         
         const db = getDbConnection('react-auth-db');
 
