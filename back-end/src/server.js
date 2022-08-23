@@ -32,6 +32,7 @@ routes.forEach(route => {
 // connection for every request.
 initializeDbConnection()
     .then(() => {
+        console.log(`MongoDB successfully connected.`);
         app.listen(PORT, () => {
             console.log(`Server is listening on port ${PORT}`);
         });
