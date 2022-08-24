@@ -14,7 +14,7 @@ export const SignUpPage = () => {
 
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [verifyPasswordValue, setVerifyPasswordValue] = useState("");
 
@@ -30,14 +30,15 @@ export const SignUpPage = () => {
         if (verifyPassword()) {
             try {
                 const response = await axios.post("http://localhost:8080/api/signup", {
-                    email: username,
+                    email: email,
                     password
                 });
                 const { token: jwtToken } = response.data;
                 console.log(`jwtToken: ${jwtToken}`);
                 setJwtToken(jwtToken);
-                navigate("/please-verify");
+                navigate(`/please-verify?email=${encodeURIComponent(email)}`);
             } catch (error) {
+                console.error(error);
                 setShowErrorMessage(true);
                 setErrorMessage(error.response.data.error);
             }
@@ -53,10 +54,10 @@ export const SignUpPage = () => {
             {showErrorMessage && <div className="fail">Uh oh... something went wrong and we couldn't sign you up.</div>}
             <form onSubmit={(e) => onSignUp(e)}>
                 <div className="form-group">
-                    <label htmlFor="username">Username</label>
-                    <input type="text" className="form-control" id="username" placeholder="Username"
+                    <label htmlFor="email">Email</label>
+                    <input type="text" className="form-control" id="email" placeholder="Email"
                         onChange={(e) => {
-                            setUsername(e.target.value);
+                            setEmail(e.target.value);
                         }}
                         />
                 </div>
@@ -76,7 +77,7 @@ export const SignUpPage = () => {
                 </div>
                 <hr />
                 <button 
-                    disabled={!(verifyPassword() && username.length > 0 && password.length > 0)}
+                    disabled={!(verifyPassword() && email.length > 0 && password.length > 0)}
                     type="submit" className="btn btn-primary" >Sign Up</button>
                 <button type="button" className="btn btn-secondary" 
                     onClick={() => navigate('/forgot-password')}>Forgot your password ? </button>
