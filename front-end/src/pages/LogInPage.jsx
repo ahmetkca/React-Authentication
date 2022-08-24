@@ -35,6 +35,19 @@ export const LogInPage = () => {
         }
     }
 
+    const [githubOauthUrl, setGithubOauthUrl] = useState("");
+    useEffect(() => {
+        (async function() {
+            try {
+                const response = await axios.get("http://localhost:8080/auth/github/url");
+                const { url } = response.data;
+                setGithubOauthUrl(url);
+            } catch (error) {
+                console.log(error);
+            }
+        })();
+    } , []);
+
 
     return (
         <div>
@@ -67,6 +80,9 @@ export const LogInPage = () => {
                     onClick={() => navigate('/forgot-password')}>Forgot your pasword?</button>
                 <button type="button" className="btn btn-secondary"
                     onClick={() => navigate('/signup')}>Don't have an account? Sign Up</button>
+                <button type="button" className="btn btn-secondary"
+                    disabled={!githubOauthUrl}
+                    onClick={() => { window.location.href = githubOauthUrl; }}>Log In with Github</button> 
             </form>
         </div>
     );
