@@ -6,6 +6,7 @@ import { testEmailRoute } from './testEmailRoute';
 import { verifyEmailRoute } from './verifyEmailRoute';
 import { forgotPasswordRoute } from './forgotPasswordRoute';
 import { resetPasswordRoute } from './resetPasswordRoute';
+import { getGithubOauthUrlRoute } from './getGithubOauthUrlRoute';
 
 export const routes = [
     testRoute,
@@ -16,4 +17,5 @@ export const routes = [
     verifyEmailRoute,
     forgotPasswordRoute,
     resetPasswordRoute,
+    getGithubOauthUrlRoute,
 ];

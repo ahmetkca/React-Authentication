@@ -1,6 +1,6 @@
 # React Authentication
 
-### JSON Web Tokens (JWTs)
+## JSON Web Tokens (JWTs)
 > Strings that we give to users when they authenticate. Can be used instead of the user's password to interact with protected server resources
 
 <pre>
@@ -31,3 +31,18 @@ Anyone who has access to token can see the information it contains, unless it's 
 **Encrypting** - prevents third parties from seeing the data inside the JWT (hides the information)
 
 Notes: JWTs are credentials. Never display them in the public.
+
+---
+
+## OAuth 2.0
+> A standard for allowing users to log in to our site using their credentials from another site, such as Google, Linkedin, Github, and others.
+### **The Three OAuth Parties**
+1. The user
+2. Our app
+3. The service provider (such as Google, Github, Linkedin etc.)
+### **The Basic OAuth Process**
+1. Generate a special URL for the service-provider's site
+2. Send the user to this URL when they click "Log in with ______"
+3. If the user grants us permission, the service provider will redirect them back to our site with special code.
+4. Our site uses this code to load the user's info.
+5. We create or update the user's account with the provider's info.
