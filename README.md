@@ -34,7 +34,7 @@ Notes: JWTs are credentials. Never display them in the public.
 
 ---
 
-## OAuth 2.0
+## **OAuth 2.0**
 > A standard for allowing users to log in to our site using their credentials from another site, such as Google, Linkedin, Github, and others.
 ### **The Three OAuth Parties**
 1. The user
@@ -46,3 +46,27 @@ Notes: JWTs are credentials. Never display them in the public.
 3. If the user grants us permission, the service provider will redirect them back to our site with special code.
 4. Our site uses this code to load the user's info.
 5. We create or update the user's account with the provider's info.
+
+---
+
+## **AWS Cognito** (Third-party Authentication Provider)
+The problem with setting up user authentication from scrach is that it can be ver time consuming even though it gives developers more flexibilty.
+
+In order to focus on business logic of the app one can use Third-party authentication provide (i.e. AWS Cognito) which offers lots of authentication functionality out of the box
+
+*AWS Cognito* offers; Storing users' passwords (and logging in/signing up), Verifying email addresses, Resetting passwords and much more.
+
+**AWS Cognito Pools**
+- *User Pools* - store our users' account information
+- *Identity Pools* - keep track of our users' permissions
+
+### How AWS Cognito Works
+
+- When a user signs up, we give their username and password to Cognito instead of storing it ourselves. (could also store any user related data)
+
+- When a user logs in, we give their password to Cognito for verification
+
+- To verify emails, Cognito sends a six-digit code instead of a link
+
+- A 6-digit code is used for password resets as well
+
