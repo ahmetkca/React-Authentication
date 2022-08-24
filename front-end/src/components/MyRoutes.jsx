@@ -6,10 +6,11 @@ import UserInfoPage from '../pages/UserInfoPage';
 import LogInPage from '../pages/LogInPage';
 import SignUpPage from '../pages/SignUpPage';
 import { ProtectedRoute } from '../auth/ProtectedRoute';
-import { VerifyEmail } from '../pages/VerifyEmail';
+import { VerifyEmail } from '../pages/PleaseVerifyEmail';
 import EmailVerificationLandingPage from '../pages/EmailVerificationLandingPage';
 import ForgotPasswordPage from '../pages/ForgotPasswordPage';
 import PasswordResetLandingPage from '../pages/PasswordResetLandingPage';
+import SixDigitEmailVerificationCodePage from '../pages/SixDigitEmailVerificationCodePage';
 
 export const MyRoutes = () => {
     return (
@@ -21,6 +22,7 @@ export const MyRoutes = () => {
                         <ProtectedRoute>
                             <UserInfoPage />
                         </ProtectedRoute>} />
+                <Route path="verify-email" element={<SixDigitEmailVerificationCodePage />} />
                 <Route path="reset-password/:passwordResetToken" element={<PasswordResetLandingPage />} />
                 <Route path="forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="verify-email/:verificationToken" element={<EmailVerificationLandingPage />} />
