@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../auth/useUser";
 import { useJwtToken } from "../auth/useJwtToken";
@@ -6,8 +7,20 @@ import axios from "axios";
 
 export const LogInPage = () => {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const tokenFromQueryString = searchParams.get("token");
+    const [ _, setJwtToken, clearJwtToken] = useJwtToken();
+    useEffect(() => {
+        console.log(tokenFromQueryString);
+        if (tokenFromQueryString) {
+            console.log('3rd party oauth authentication provider');
+            clearJwtToken();
+            setJwtToken(tokenFromQueryString);
+            navigate("/");
+        }
+    } , []);
 
-    const [ _, setJwtToken] = useJwtToken();
+    
 
     const [showErrorMessage, setShowErrorMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");

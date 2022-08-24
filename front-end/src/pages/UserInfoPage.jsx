@@ -7,6 +7,7 @@ import { useJwtToken } from "../auth/useJwtToken";
 
 export const UserInfoPage = () => {
     const { email, info, userId, isVerified } = useUser();
+    const user = useUser();
     const [jwtToken, setJwtToken, clearJwtToken] = useJwtToken();
 
     const navigate = useNavigate();
@@ -62,10 +63,14 @@ export const UserInfoPage = () => {
 
     return (
         <div className="content-container">
+            { user?.githubAvatarUrl && <img src={user.githubAvatarUrl} alt="github avatar" width={64} height={64} /> }
             <h1>Info for {email}</h1>
             {!isVerified && <div className="fail">To be able to update your info you need to verify your email!</div>}
             {showSuccessMessage && <div className="success">Successfully saved user data!</div>}
             {showErrorMessage && <div className="fail">Uh oh... something went wrong and we couldn't save changes.</div>}
+            {  user?.githubUsername ? <label>Github Username: <input disabled readOnly value={user.githubUsername} /></label> : null }
+            { user?.githubId ? <label>Github Id: <input disabled readOnly value={user.githubId} /></label> : null }
+            { user?.githubBio ? <label>Github Bio: <input disabled readOnly value={user.githubBio} /></label> : null }
             <label>
                 Favorite food:
                 <input 

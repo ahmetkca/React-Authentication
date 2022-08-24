@@ -6,6 +6,7 @@ export const useJwtToken = () => {
     });
 
     const setJwtToken = (jwtToken) => {
+        console.log(`setJwtToken: ${jwtToken}`);
         localStorage.setItem("jwtToken", jwtToken); // set the token to localStorage
         setToken(jwtToken); // set the token to the state
     } // external function to set the token
