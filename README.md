@@ -13,7 +13,7 @@
     * The authority gives us an SSL certificate we can use to verify our identity
     * Lets Encrypt is one of the free certificate providers.
 
-2. Salting and Peppering Passwords
+2. ### Salting and Peppering Passwords
     * ***Salting*** - generating a random string for each user and combining that with their password **before hashing**.
         * ```
             asasd123asd12 + myP4sSW0rd!
@@ -28,6 +28,22 @@
     
     * Adds an extra layer of security over just hashing.
     * Makes easy-to-guess passwords harder to identify in the database.
+
+3. ### Never trust the Front-End
+    * When implementing some kind of security measure, it must be implemented on the server. It should never rely solely on client-side logic.
+        * Some Examples:
+            * Make sure users can only view their own data
+            * Make sure users can't store arbitrary fields in our database
+            * Make sure only paid subscribers can access certain content
+
+4. ### Authentication Error Handling
+    * Inform Users of Authentication Errors, if something goes wrong let the user know.
+    * Don't tell them too much. There are certain things that we don't want our users to know too much about.
+    * Balance between maximizing user experience and maximizing safety.
+
+5. ### Securing Your Database
+    * Hosting your database somewhere means "exposing it to the elements"
+    * Most database providers will already have a basic security setup such as only allowed IPs
 
 </details>
 
