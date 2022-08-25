@@ -20,7 +20,7 @@ export const ForgotPasswordPage = () => {
             setIsSuccessful(true);
             setErrorMessage("");
             setTimeout(() => {
-                navigate("/login");
+                navigate(`/reset-password?email=${encodeURIComponent(email)}`);
             }, 3000);
         } catch (error) {
             console.error(error);
