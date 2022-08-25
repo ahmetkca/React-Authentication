@@ -23,7 +23,7 @@ export const MyRoutes = () => {
                             <UserInfoPage />
                         </ProtectedRoute>} />
                 <Route path="verify-email" element={<SixDigitEmailVerificationCodePage />} />
-                <Route path="reset-password/:passwordResetToken" element={<PasswordResetLandingPage />} />
+                <Route path="reset-password" element={<PasswordResetLandingPage />} />
                 <Route path="forgot-password" element={<ForgotPasswordPage />} />
                 <Route path="verify-email/:verificationToken" element={<EmailVerificationLandingPage />} />
                 <Route path="please-verify" element={<VerifyEmail />} />

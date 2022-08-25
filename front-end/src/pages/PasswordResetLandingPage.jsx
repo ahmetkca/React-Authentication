@@ -1,16 +1,19 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import PasswordResetFail from "./PasswordResetFail";
 import PasswordResetSuccess from "./PasswordResetSuccess";
 
 
 export const PasswordResetLandingPage = () => {
-    const { passwordResetToken } = useParams();
+    const [searchParams] = useSearchParams();
+    const email = searchParams.get("email");
     const [passwordValue, setPasswordValue] = useState("");
     const [confirmPasswordValue, setConfirmPasswordValue] = useState("");
+    const [verificationToken, setVerificationToken] = useState("");
     const [isSuccess, setIsSuccess] = useState(false);
     const [isFail, setIsFail] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -19,18 +22,20 @@ export const PasswordResetLandingPage = () => {
         }
         try {
             const response = await axios.put(`http://localhost:8080/api/reset-password`, {
-                passwordResetToken,
-                password: passwordValue
+                verificationToken,
+                newPassword: passwordValue,
+                email
             });
             setIsSuccess(true);
         } catch (error) {
             console.error(error);
+            setErrorMessage(error.response.data.error);
             setIsFail(true);
         }
     }
 
     if (isSuccess) return <PasswordResetSuccess />;
-    if (isFail) return <PasswordResetFail />;
+    if (isFail) return <PasswordResetFail errorMessage={errorMessage} />;
 
     return (
         <div>
@@ -38,7 +43,7 @@ export const PasswordResetLandingPage = () => {
             <p>Enter your new password.</p>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="password">Password</label>
+                    <label htmlFor="password">New Password:</label>
                     <input
                         type="password"
                         name="password"
@@ -48,7 +53,7 @@ export const PasswordResetLandingPage = () => {
                         placeholder="Enter your new password" />
                 </div>
                 <div className="form-group">
-                    <label htmlFor="confirmPassword">Confirm Password</label>
+                    <label htmlFor="confirmPassword">Confirm New Password:</label>
                     <input
                         type="password"
                         name="confirmPassword"
@@ -58,9 +63,21 @@ export const PasswordResetLandingPage = () => {
                         placeholder="Confirm your new password" />
                 </div>
                 <div className="form-group">
+                    <label htmlFor="verificationToken">Password Reset Verification Token</label>
+                    <input
+                        type="text"
+                        name="verificationToken"
+                        value={verificationToken}
+                        onChange={(e) => setVerificationToken(e.target.value)}
+                        className="form-control"
+                        placeholder="Enter your password reset verification token." />
+                </div>
+                <div className="form-group">
+                    {passwordValue}
+                    {confirmPasswordValue}
                     <button
-                        disabled={(!passwordValue || !confirmPasswordValue) && passwordValue !== confirmPasswordValue}
-                        type="submit" className="btn btn-primary">Reset Password</button>   
+                        disabled={verificationToken === "" || passwordValue === "" || passwordValue !== confirmPasswordValue}
+                        type="submit" className="btn btn-primary">Reset Password</button>
                 </div>
             </form>
         </div>

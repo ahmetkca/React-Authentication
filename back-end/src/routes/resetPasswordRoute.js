@@ -1,32 +1,23 @@
-import { ObjectId } from 'mongodb';
-import { getDbConnection } from '../db';
-import bcrypt from 'bcrypt';
+import { CognitoUser } from "amazon-cognito-identity-js";
+import { awsUserPool } from "../utils/auth/aws/awsUserPool";
 
 export const resetPasswordRoute = {
     path: '/api/reset-password',
     method: 'PUT',
     handler: async (req, res) => {
-        const { passwordResetToken, password } = req.body;
-        console.log(`reset-password endpoint called with passwordResetToken: ${passwordResetToken}`);
-        console.log(`reset-password endpoint called with password: ${password}`);
-        const db = getDbConnection('react-auth-db');
-        const user = await db.collection('users').findOne({ passwordResetToken });
-        if (!user) {
-            return res.status(404).json({ error: 'No user found with the provided password reset token.' });
-        }
-        const { _id: userId, email } = user;
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const userUpdateResult = await db.collection('users')
-                        .updateOne(
-                            { _id: ObjectId(userId) }, 
-                            { 
-                                $set: { hashedPassword },
-                                $unset: { passwordResetToken: '' }  // remove the passwordResetToken field from the user document
-                            }
-                        );
-        if (userUpdateResult.modifiedCount === 0) {
-            return res.status(404).json({ error: 'Password reset was not successful' });
-        }
-        return res.status(200).json({ message: 'Password reset successful' });
+        const { verificationToken, newPassword, email } = req.body;
+        
+        
+        new CognitoUser({ Username: email, Pool: awsUserPool })
+            .confirmPassword(verificationToken, newPassword, {
+                onSuccess: async (data) => {
+                    console.trace(data);
+                    return res.status(200).json({ message: 'Password reset successful' });
+                },
+                onFailure: (err) => {
+                    console.trace(err);
+                    return res.status(500).json({ error: err.message });
+                }
+            });
     }
 }
