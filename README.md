@@ -1,5 +1,36 @@
 # React Authentication
 
+## Authentication Best Practices
+<details>
+  <summary>Click to see Best Practices</summary>
+
+1. ### Using HTTPS, SSL and TLS
+    * https instead of http means a site is using SSL/TLS
+        * i.e. https://www.google.com
+    * It's important that users know that they're interacting with our site, and only our site.
+    * HTTPS encrypts the data that are being send from client to server
+    * Register the site with a certificate authority
+    * The authority gives us an SSL certificate we can use to verify our identity
+    * Lets Encrypt is one of the free certificate providers.
+
+2. Salting and Peppering Passwords
+    * ***Salting*** - generating a random string for each user and combining that with their password **before hashing**.
+        * ```
+            asasd123asd12 + myP4sSW0rd!
+                       |
+                       v
+            asasd123asd12myP4sSW0rd!   
+                       |
+                       v
+            (Generate a hash from this)
+    * ***Peppering*** - This is the same thing as salting, except the random "pepper" string is the same for all users and not stored in the database.
+        * Salting and Peppering usually combined together.
+    
+    * Adds an extra layer of security over just hashing.
+    * Makes easy-to-guess passwords harder to identify in the database.
+
+</details>
+
 ## JSON Web Tokens (JWTs)
 > Strings that we give to users when they authenticate. Can be used instead of the user's password to interact with protected server resources
 
