@@ -1,3 +1,4 @@
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}.local` });
 import jwt from 'jsonwebtoken';
 import { getDbConnection } from '../db';
 
@@ -15,9 +16,11 @@ export const logInRoute = {
             return res.status(401).json({ error: 'User not found' });
         }
 
-        const { _id: id, hashedPassword, isVerified, info } = user;
+        const { _id: id, hashedPassword, isVerified, info, salt } = user;
+        const pepper = process.env.PEPPER_STRING;
 
-        const isPasswordValid = await compareAsync(password, hashedPassword);
+
+        const isPasswordValid = await compareAsync(salt + password + pepper, hashedPassword);
 
         if (!isPasswordValid) {
             return res.status(401).json({ error: 'Password is incorrect' });

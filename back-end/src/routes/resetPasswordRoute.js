@@ -15,12 +15,14 @@ export const resetPasswordRoute = {
             return res.status(404).json({ error: 'No user found with the provided password reset token.' });
         }
         const { _id: userId, email } = user;
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const newSalt = await bcrypt.genSalt(10);
+        const pepper = process.env.PEPPER_STRING;
+        const hashedPassword = await bcrypt.hash(newSalt + password + pepper, 10);
         const userUpdateResult = await db.collection('users')
                         .updateOne(
                             { _id: ObjectId(userId) }, 
                             { 
-                                $set: { hashedPassword },
+                                $set: { hashedPassword, salt: newSalt },
                                 $unset: { passwordResetToken: '' }  // remove the passwordResetToken field from the user document
                             }
                         );

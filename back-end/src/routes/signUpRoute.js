@@ -1,3 +1,4 @@
+require('dotenv').config({ path: `.env.${process.env.NODE_ENV}.local` });
 import { getDbConnection } from "../db";
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
@@ -16,7 +17,10 @@ export const signUpRoute = {
             return res.status(409).send({ error: 'User already exists' });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const salt = uuidv4();
+        const pepper = process.env.PEPPER_STRING;
+
+        const hashedPassword = await bcrypt.hash(salt + password + pepper, 10);
         const verificationToken = uuidv4();
 
         
@@ -29,6 +33,7 @@ export const signUpRoute = {
         const newUser = await db.collection('users').insertOne({
             email,
             hashedPassword,
+            salt,
             info: { ...defaultUser },
             isVerified: false,
             verificationToken,
