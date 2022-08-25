@@ -42,8 +42,8 @@ export const LogInPage = () => {
             setJwtToken(jwtToken);
             navigate("/");
         } catch (error) {
+            console.trace(error);
             setShowErrorMessage(true);
-            console.log(error);
             setErrorMessage(error.response.data.error);
         }
     }
